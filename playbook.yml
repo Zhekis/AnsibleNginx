@@ -1,0 +1,23 @@
+---
+- name: Deploy Nginx
+  hosts: webservers
+  become: yes
+  become_method: sudo
+  remote_user: zh
+  vars:
+    ansible_port: 2222
+  
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Copy index
+      ansible.builtin.copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0666'
